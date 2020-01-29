@@ -18,4 +18,8 @@
     <string name="case_header">Case</string>
     <string name="case_average">Average Case</string>
     <string name="case_worst">Worst Case</string>
+    <string name="result">Result</string>
+    <string name="to">To:</string>
+    <string name="subject">Subject:</string>
+
 </resources>

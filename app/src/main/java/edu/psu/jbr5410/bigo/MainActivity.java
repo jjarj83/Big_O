@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
@@ -206,13 +207,23 @@ public class MainActivity extends AppCompatActivity {
                     TextView textSubject = findViewById(R.id.subtext);
                     TextView textAddress = findViewById(R.id.addressText);
 
+                    String emailAddress = textAddress.toString();
+                    String emailSubject = textSubject.toString();
+                    String emailBody = textBody.toString();
 
-                    Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:"));
-                    intent.putExtra(Intent.EXTRA_EMAIL, textAddress.toString());
-                    intent.putExtra(Intent.EXTRA_SUBJECT, textSubject.toString());
-                    intent.putExtra(Intent.EXTRA_TEXT, textBody.toString());
 
+                    Intent intent = new Intent(Intent.ACTION_SENDTO,Uri.fromParts("mailto",
+                            emailAddress, null));
+
+                    intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+                    intent.putExtra(Intent.EXTRA_TEXT, emailBody);
+
+                    try {
+                        startActivity(intent);
+                    }
+                    catch (android.content.ActivityNotFoundException ex) {
+                        Log.e("MyActivity", "There is no email client installed.");
+                    }
 
                 }
                 menuClicks++;

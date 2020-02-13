@@ -1,5 +1,7 @@
 package edu.psu.jbr5410.bigo;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -8,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     //String[] operations = {"Get Min", "Insert", "Search"};
+    int menuClicks = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,188 +32,195 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final Spinner dataStructureSpinner = findViewById(R.id.dataStructureSpinner);
+        dataStructureSpinner.setSelection(1);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+        switch (item.getItemId()) {
+            case R.id.menu_compose:
+                if (menuClicks % 2 == 0) {
+                    item.setIcon(R.drawable.ic_email_black_24dp);
+                    EditText editEmailAddress = (EditText) findViewById(R.id.emailAddress);
+                    String emailAddress = editEmailAddress.getText().toString();
+
+                    EditText editEmailSubject = (EditText) findViewById(R.id.emailSubject);
+                    String emailSubject = editEmailSubject.getText().toString();
+
+                    TextView textAddress = findViewById(R.id.addressText);
+                    textAddress.setText(emailAddress);
+
+                    TextView textSubject = findViewById(R.id.subtext);
+                    textSubject.setText(emailSubject);
+
+                    String dataStructure = dataStructureSpinner.getSelectedItem().toString();
+
+                    RadioGroup radioGroup = findViewById(R.id.radioGroup);
+                    int radioId = radioGroup.getCheckedRadioButtonId();
+                    RadioButton selectedButton = (RadioButton) findViewById(radioId);
+                    String caseText = selectedButton.getText().toString();
+
+                    String emailBody = caseText + " Time complexity for " + dataStructure;
+
+                    TextView textBody = findViewById(R.id.textBody);
+
+                    CheckBox getMinCheck = (CheckBox) findViewById(R.id.getMin);
+                    CheckBox insertCheck = (CheckBox) findViewById(R.id.insert);
+                    CheckBox searchCheck = (CheckBox) findViewById(R.id.search);
+
+                    if (getMinCheck.isChecked()) {
+                        emailBody = emailBody + "\n Get Min: ";
+
+                        if (dataStructure.equals("2-3 Tree")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(logn)";
+                            }
+                        }
+                        else if (dataStructure.equals("Binary Search Tree")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Hash Table")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(n)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Linked List")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(n)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Min Heap")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(1)";
+                            } else {
+                                emailBody = emailBody + "O(1)";
+                            }
+                        }
+                    }
+
+                    if (insertCheck.isChecked()) {
+                        emailBody = emailBody + "\n Insert: ";
+
+                        if (dataStructure.equals("2-3 Tree")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(logn)";
+                            }
+                        }
+                        else if (dataStructure.equals("Binary Search Tree")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Hash Table")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(1)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Linked List")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(l)";
+                            } else {
+                                emailBody = emailBody + "O(l)";
+                            }
+                        }
+                        else if (dataStructure.equals("Min Heap")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(logn)";
+                            }
+                        }
+                    }
+
+                    if (searchCheck.isChecked()) {
+                        emailBody = emailBody + "\n Search: ";
+
+                        if (dataStructure.equals("2-3 Tree")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(logn)";
+                            }
+                        }
+                        else if (dataStructure.equals("Binary Search Tree")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(logn)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Hash Table")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(1)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Linked List")) {
+                            if (caseText.equals("Average Case")) {
+                                emailBody = emailBody + "O(n)";
+                            } else {
+                                emailBody = emailBody + "O(n)";
+                            }
+                        }
+                        else if (dataStructure.equals("Min Heap")) {
+                            if (caseText.equals("Average Case")) {
+
+                            }
+                        }
+                    }
+
+                    textBody.setText(emailBody);
+
+                }
+                else if (menuClicks % 2 == 1) {
+                    item.setIcon(R.drawable.ic_edit_black_24dp);
+                    TextView textBody = findViewById(R.id.textBody);
+                    TextView textSubject = findViewById(R.id.subtext);
+                    TextView textAddress = findViewById(R.id.addressText);
+
+
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"));
+                    intent.putExtra(Intent.EXTRA_EMAIL, textAddress.toString());
+                    intent.putExtra(Intent.EXTRA_SUBJECT, textSubject.toString());
+                    intent.putExtra(Intent.EXTRA_TEXT, textBody.toString());
+
+
+                }
+                menuClicks++;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
-    public void buttonClick(View view) {
-        EditText editEmailAddress = (EditText) findViewById(R.id.emailAddress);
-        String emailAddress = editEmailAddress.getText().toString();
 
-        EditText editEmailSubject = (EditText) findViewById(R.id.emailSubject);
-        String emailSubject = editEmailSubject.getText().toString();
-
-        TextView textAddress = findViewById(R.id.addressText);
-        textAddress.setText(emailAddress);
-
-        TextView textSubject = findViewById(R.id.subtext);
-        textSubject.setText(emailSubject);
-
-        Spinner dataStructureSpinner = findViewById(R.id.dataStructureSpinner);
-        String dataStructure = dataStructureSpinner.getSelectedItem().toString();
-
-        RadioGroup radioGroup = findViewById(R.id.radioGroup);
-        int radioId = radioGroup.getCheckedRadioButtonId();
-        RadioButton selectedButton = (RadioButton) findViewById(radioId);
-        String caseText = selectedButton.getText().toString();
-
-        String emailBody = caseText + " Time complexity for " + dataStructure;
-
-        TextView textBody = findViewById(R.id.textBody);
-
-        CheckBox getMinCheck = (CheckBox) findViewById(R.id.getMin);
-        CheckBox insertCheck = (CheckBox) findViewById(R.id.insert);
-        CheckBox searchCheck = (CheckBox) findViewById(R.id.search);
-
-        if (getMinCheck.isChecked()) {
-            emailBody = emailBody + "\n Get Min: ";
-
-            if (dataStructure.equals("2-3 Tree")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(logn)";
-                }
-            }
-            else if (dataStructure.equals("Binary Search Tree")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Hash Table")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(n)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Linked List")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(n)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Min Heap")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(1)";
-                } else {
-                    emailBody = emailBody + "O(1)";
-                }
-            }
-        }
-
-        if (insertCheck.isChecked()) {
-            emailBody = emailBody + "\n Insert: ";
-
-            if (dataStructure.equals("2-3 Tree")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(logn)";
-                }
-            }
-            else if (dataStructure.equals("Binary Search Tree")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Hash Table")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(1)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Linked List")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(l)";
-                } else {
-                    emailBody = emailBody + "O(l)";
-                }
-            }
-            else if (dataStructure.equals("Min Heap")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(logn)";
-                }
-            }
-        }
-
-        if (searchCheck.isChecked()) {
-            emailBody = emailBody + "\n Search: ";
-
-            if (dataStructure.equals("2-3 Tree")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(logn)";
-                }
-            }
-            else if (dataStructure.equals("Binary Search Tree")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(logn)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Hash Table")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(1)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Linked List")) {
-                if (caseText.equals("Average Case")) {
-                    emailBody = emailBody + "O(n)";
-                } else {
-                    emailBody = emailBody + "O(n)";
-                }
-            }
-            else if (dataStructure.equals("Min Heap")) {
-                if (caseText.equals("Average Case")) {
-
-                }
-            }
-        }
-
-        textBody.setText(emailBody);
-
-
-    }
 }

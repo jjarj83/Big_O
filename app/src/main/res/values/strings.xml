@@ -21,5 +21,6 @@
     <string name="result">Result</string>
     <string name="to">To:</string>
     <string name="subject">Subject:</string>
+    <string name="menu_compose">menu_compose</string>
 
 </resources>
